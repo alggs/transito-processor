@@ -1,0 +1,8 @@
+{
+  "name": "transito-processor",
+  "version": "1.0.0",
+  "description": "microservice to process rabbit messages",
+  "main": "index.js",
+  "repository": "https://github.com/alggs/transito-processor.git",
+  "license": "MIT"
+}

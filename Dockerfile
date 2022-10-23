@@ -1,4 +1,4 @@
-FROM node:13-alpine
+FROM node:14.16.0
 
 COPY ./package*.json /processor/
 
