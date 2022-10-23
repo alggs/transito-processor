@@ -1,6 +1,6 @@
 const amqp = require('amqplib/callback_api');
 const app = require("./app");
-
+var ALL_BUSES = {};
 // ==X==X==X==X==X==X==X==X==X==X==X==X==X HTTP SERVER ==X==X==X==X==X==X==X==X==X==X==X==X==X 
 
 
@@ -26,7 +26,7 @@ amqp.connect('amqp://localhost:5672', function (err, conn) {
             ch.bindQueue(q.queue, exchange, '');
 
             ch.consume(q.queue, function (msg) {
-                console.log(" [x] %s", msg.content.toString());
+                ALL_BUSES = JSON.parse(msg.content);
             }, { noAck: true });
         });
     });
