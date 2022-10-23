@@ -14,11 +14,8 @@ function logRequests(req, res, next) {
 
 app.use(logRequests); // Usando o middleware pare logar todas as requisições que recebermos no console
 
-app.get("/busline/:id", (request, response) => {
-
-    const {id} = request.params;
-    // startar um websocket
-    response.status(200).json({message: "A connection will be stablished to pass your data."})
+app.get("/admin", (request, response) => {
+    response.status(200).json({message: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"})
 });
 
 module.exports = app;

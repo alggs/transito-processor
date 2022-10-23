@@ -1,12 +1,15 @@
 const amqp = require('amqplib/callback_api');
+const websocket = require('./websocket');
 const app = require("./app");
 var ALL_BUSES = {};
 // ==X==X==X==X==X==X==X==X==X==X==X==X==X HTTP SERVER ==X==X==X==X==X==X==X==X==X==X==X==X==X 
 
 
 app.listen(8080, () => {
-    console.log('🚀 processor started!')
+    console.log('🚌 processor started!')
 });
+
+websocket(app);
 
 // ==X==X==X==X==X==X==X==X==X==X==X==X==X HTTP SERVER ==X==X==X==X==X==X==X==X==X==X==X==X==X 
 
