@@ -2,7 +2,17 @@
   "name": "transito-processor",
   "version": "1.0.0",
   "description": "microservice to process rabbit messages",
-  "main": "index.js",
+  "main": "src/server.js",
   "repository": "https://github.com/alggs/transito-processor.git",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
