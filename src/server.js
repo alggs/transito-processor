@@ -29,7 +29,7 @@ amqp.connect('amqp://localhost:5672', function (err, conn) {
             ch.bindQueue(q.queue, exchange, '');
 
             ch.consume(q.queue, function (msg) {
-                console.log('Buses info received!')
+                console.log('🚌 VRUM VRUM OS ONIBUS SE MOVERAM!')
                 GlobalVariables.ALL_BUSES = JSON.parse(msg.content);
             }, { noAck: true });
         });
