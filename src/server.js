@@ -2,10 +2,10 @@ const amqp = require('amqplib/callback_api');
 const websocket = require('./websocket');
 const app = require("./app");
 const server = require('http').createServer(app);
-var ALL_BUSES = {};
+const GlobalVariables = require('./globalVariables')
 // ==X==X==X==X==X==X==X==X==X==X==X==X==X HTTP SERVER ==X==X==X==X==X==X==X==X==X==X==X==X==X 
 
-websocket(server);
+wss = websocket(server);
 
 server.listen(3001, () => {
     console.log('🚌 processor started!')
@@ -29,7 +29,8 @@ amqp.connect('amqp://localhost:5672', function (err, conn) {
             ch.bindQueue(q.queue, exchange, '');
 
             ch.consume(q.queue, function (msg) {
-                ALL_BUSES = JSON.parse(msg.content);
+                console.log('Buses info received!')
+                GlobalVariables.ALL_BUSES = JSON.parse(msg.content);
             }, { noAck: true });
         });
     });
