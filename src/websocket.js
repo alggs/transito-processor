@@ -1,13 +1,28 @@
 const WebSocket = require('ws');
 const GlobalVariables = require('./globalVariables')
+const { from, map, distinct, toArray, filter } = require('rxjs')
 
 let IDS = 0
 
-function broadcast(jsonObject) {
+const clientRouteChoosed = {}
+
+filterLinesIntoObjects = (lines) => {
+    return {
+        id: lines.c,
+        name: `${lines.lt0} / ${lines.lt1}`
+    }
+}
+
+function broadcast() {
     if (!this.clients) return;
     this.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(jsonObject));
+            const route = clientRouteChoosed[client.id] || 'all'
+            from(Object.values(GlobalVariables.ALL_BUSES.l))
+            .pipe(
+                filter(lines => route === 'all' || lines.c === route),
+                toArray()
+            ).subscribe(result => client.send(JSON.stringify(result)))
         }
     });
 }
@@ -19,17 +34,31 @@ function onError(ws, err) {
 }
  
 function onMessage(ws, data) {
-    if (data == -1) {
-        ws.send(JSON.stringify(GlobalVariables.ALL_BUSES))
+    data = data.toString()
+    console.log(data)
+    if (data === '-1') {
+        from(Object.values(GlobalVariables.ALL_BUSES.l))
+        .pipe(
+            map(filterLinesIntoObjects),
+            distinct(({ id }) => id),
+            toArray()
+        ).subscribe(result => ws.send(JSON.stringify(result)))
+    } else {
+        clientRouteChoosed[ws.id] = data
+        const route = data || 'all'
+        from(Object.values(GlobalVariables.ALL_BUSES.l))
+        .pipe(
+            filter(lines => route === 'all' || lines.c === route),
+            toArray()
+        ).subscribe(result => ws.send(JSON.stringify(result)))
     }
     console.log(`onMessage: ${data}`);
-    console.log(ws)
 }
  
 function onConnection(ws, req) {
     let clientID = ws.id
     if (!ws.id) {
-        clientID = IDS++
+        clientID = IDS + 1
     }
     ws.id = clientID
 

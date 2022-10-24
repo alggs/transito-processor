@@ -31,6 +31,7 @@ amqp.connect('amqp://localhost:5672', function (err, conn) {
             ch.consume(q.queue, function (msg) {
                 console.log('Buses info received!')
                 GlobalVariables.ALL_BUSES = JSON.parse(msg.content);
+                wss.broadcast()
             }, { noAck: true });
         });
     });
